@@ -37,10 +37,10 @@ void setup() {
 /*******Loop******************/
 void loop() {
 	motion = getData(motion); //Call for the getData function to get transmited data
-  
-  Serial.print("Received motion: ");//Printing to serial monitor the received data
-  Serial.println(motion);
-  Serial.println("");
+
+	Serial.print("Received motion: ");//Printing to serial monitor the received data
+	Serial.println(motion);
+	Serial.println("");
 	
 	delay(100);
 }

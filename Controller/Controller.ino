@@ -30,8 +30,6 @@ bool sendData(int motion){
   }
   return success;
 }
-
-
 /*--------------------------------------*/
 /*---------------------GET DIRECTION------------*/
 
@@ -50,7 +48,7 @@ int getDirection(){
     return 1;
   else if((joyY>=950&&joyY<=1030))
     return 3;
-  else 
+  else
     return -1;
 }
 
@@ -66,7 +64,7 @@ void displayDirection(int motion){
     case 2:digitalWrite(LedB,HIGH);delay(100);digitalWrite(LedB,LOW);break;
     case 3:digitalWrite(LedL,HIGH);delay(100);digitalWrite(LedL,LOW);break;
   }
-  
+
 }
 
 /*-----------------------------------------------*/
@@ -82,20 +80,19 @@ void setup(){
   radio.begin();
   radio.openWritingPipe(address);
   radio.setPALevel(RF24_PA_MIN);
-  
+
   Serial.begin(9600);
-  
+
 }
 
-void loop(){  
+void loop(){
 
   /* Get Data from Pin And */
 
   int motion=getDirection();
   if(sendData(motion)&&motion!=-1)
     displayDirection(motion);
-  
-   // displayDirection(motion);
-   
-}
 
+   // displayDirection(motion);
+
+}
