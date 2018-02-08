@@ -34,25 +34,26 @@ void setup() {
 	pinMode(s3, OUTPUT);
 	pinMode(colorSensorOut, INPUT);
 	digitalWrite(s0, HIGH);
-	digitalWrite(s1, LOW);
+	digitalWrite(s1, HIGH);
 
-	radio.begin();
-	radio.openReadingPipe(0, address);
-	radio.setPALevel(RF24_PA_MIN);
+	//radio.begin();
+	//radio.openReadingPipe(0, address);
+	//radio.setPALevel(RF24_PA_MIN);
 
 	Wire.begin();
 
-	colorSensor = false;
+	colorSensor = true;
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 	//buzz(5, 50, 500);
 	if(colorSensor){
-		Serial.println(getColor());
+		Serial.println();
+		getColor();
 	}
-	motion = getData(motion);
-	commandSlaveTo(motion);
+	//motion = getData(motion);
+	//commandSlaveTo(motion);
 
 	delay(50);
 }
@@ -89,37 +90,45 @@ int getColor(){
 	digitalWrite(s3, LOW);
 
 	redValue = pulseIn(colorSensorOut, LOW);
-	/*Serial.print("R= ");//printing name
+	Serial.print("R= ");//printing name
 	Serial.print(redValue);//printing RED color frequency
-	Serial.print("  ");*/
+	Serial.print("  ");
 
 
 	digitalWrite(s2, HIGH);
 	digitalWrite(s3, HIGH);
 
 	greenValue = pulseIn(colorSensorOut, LOW);
-	/*Serial.print("G= ");//printing name
+	Serial.print("G= ");//printing name
 	Serial.print(greenValue);//printing RED color frequency
-	Serial.print("  ");*/
+	Serial.print("  ");
 
 
 	digitalWrite(s2, LOW);
 	digitalWrite(s3, HIGH);
 
 	blueValue = pulseIn(colorSensorOut, LOW);
-	/*Serial.print("B= ");//printing name
+	Serial.print("B= ");//printing name
 	Serial.print(blueValue);//printing RED color frequency
-	Serial.println("  ");*/
+	Serial.println("  ");
 	delay(100);
 
-	if(redValue<greenValue && redValue<blueValue){
+	int redBlue = redValue - blueValue;
+	int blueGreen = blueValue - greenValue;
+	int redGreen = redValue - greenValue;
+
+	if(redBlue<0){redBlue=-redBlue;}
+	if(blueGreen<0){blueGreen=-blueGreen;}
+	if(redGreen<0){redGreen=-redGreen;}
+
+	if(redBlue<blueGreen && redBlue<redGreen){
+		return 1;
+	}
+	else if(blueGreen<redBlue && blueGreen<redGreen){
 		return 0;
 	}
-	else if(blueValue<greenValue && blueValue<redValue){
+	else if(redGreen<redBlue && redGreen<blueGreen){
 		return 2;
-	}
-	else{
-		return 1;
 	}
 }
 
